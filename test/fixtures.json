@@ -1,17 +1,17 @@
 {
   "wallet": {
     "alice" : {
-      "mnemonic": "glory patient hour tilt hill cricket farm heavy spice raw culture height", 
+      "mnemonic": "dolphin innocent off grit flash lobster decade bright fold provide blanket ask", 
       "password": "12345678"
     },
     "bob" : {
-      "mnemonic": "exercise model spy age call smart endorse age exit truck security smart",
+      "mnemonic": "start health remove equal grass theory sponsor smile coach nurse crouch flush",
       "password": "12345678"
     }
   },
   "assetDefinitions": [
     { "monikers": ["gold"], "colorDescs": ["epobc:b95323a763fa507110a89ab857af8e949810cf1e67e91104cd64222a04ccd0bb:0:180679"] },
-    { "colorDescs": ["epobc:0261b29b587020eeca15f831a5290a9d81038851da4365689be04e588ce58c66:0:303510"], "monikers": ["euro"], "unit": 100 }
+    { "monikers": ["euro"], "colorDescs": ["epobc:0261b29b587020eeca15f831a5290a9d81038851da4365689be04e588ce58c66:0:303510"], "unit": 100 }
   ],
   "tx": {
     "uncolored2" : {

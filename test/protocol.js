@@ -9,7 +9,7 @@ var EWalletController = p2ptrade.EWCtrl.EWalletController
 var ThreadedComm = p2ptrade.Comm.ThreadedComm
 
 // fixtures
-var fixtures = require('./fixtures/protocol.json')
+var fixtures = require('./fixtures.json')
 var alice = fixtures.wallet.alice // 123000 gold
 var bob = fixtures.wallet.bob // 3300000 btc
 var assetdefs = fixtures.assetDefinitions
@@ -67,53 +67,52 @@ describe('P2PTrade Protocol', function(){
     var seedAlice = BIP39.mnemonicToSeedHex(alice.mnemonic, alice.password)
     walletAlice = new ccWallet({
       testnet: true,
-      networks: [{name: 'ElectrumJS', args: [{testnet: true}]}],
-      autoConnect: false,
-      store: new MockStore(),
-      blockchain: {name: 'Naive'},
+      blockchain: {name: 'Verified'},
       spendUnconfirmedCoins: true,
+      store: new MockStore(),
       systemAssetDefinitions: assetdefs
     })
-    walletAlice.getNetwork().connect()
-    walletAlice.initialize(seedAlice)
-    ewctrlAlice = new EWalletController(walletAlice, seedAlice)
-    ewctrlAlice.neverSendOnPublishTx = true
-    commAlice = new ThreadedComm(commConfig, commUrl)
-    commAlice.start()
-    agentAlice = new EAgent(ewctrlAlice, agentConfig, commAlice)
-    agentAlice.name = "alice"
-
-    // setup bob
-    seedBob = BIP39.mnemonicToSeedHex(bob.mnemonic, bob.password)
-    walletBob = new ccWallet({
-      testnet: true,
-      networks: [{name: 'ElectrumJS', args: [{testnet: true}]}],
-      autoConnect: false,
-      store: new MockStore(),
-      blockchain: {name: 'Naive'},
-      spendUnconfirmedCoins: true,
-      systemAssetDefinitions: assetdefs
-    })
-    walletBob.getNetwork().connect()
-    walletBob.initialize(seedBob)
-    ewctrlBob = new EWalletController(walletBob, seedBob)
-    ewctrlBob.neverSendOnPublishTx = true
-    commBob = new ThreadedComm(commConfig, commUrl)
-    commBob.start()
-    agentBob = new EAgent(ewctrlBob, agentConfig, commBob)
-    agentBob.name = "bob"
-
-    // sync wallets
+    walletAlice.on('error', function (e) {console.error(e)})
     walletAlice.once('syncStop', function(error){
-      if (error){ throw error }
-      walletBob.once('syncStop', done)
+      if(error){ throw error }
+
+      walletAlice.initialize(seedAlice)
+      ewctrlAlice = new EWalletController(walletAlice, seedAlice)
+      ewctrlAlice.neverSendOnPublishTx = true
+      commAlice = new ThreadedComm(commConfig, commUrl)
+      commAlice.start()
+      agentAlice = new EAgent(ewctrlAlice, agentConfig, commAlice)
+      agentAlice.name = "alice"
+
+      // setup bob
+      seedBob = BIP39.mnemonicToSeedHex(bob.mnemonic, bob.password)
+      walletBob = new ccWallet({
+        testnet: true,
+        blockchain: {name: 'Verified'},
+        spendUnconfirmedCoins: true,
+        store: new MockStore(),
+        systemAssetDefinitions: assetdefs
+      })
+      walletBob.on('error', function (e) {console.error(e)})
+      walletBob.once('syncStop', function(error){
+        if(error){ throw error }
+        walletBob.initialize(seedBob)
+        ewctrlBob = new EWalletController(walletBob, seedBob)
+        ewctrlBob.neverSendOnPublishTx = true
+        commBob = new ThreadedComm(commConfig, commUrl)
+        commBob.start()
+        agentBob = new EAgent(ewctrlBob, agentConfig, commBob)
+        agentBob.name = "bob"
+
+        done()
+      })
     })
   })
 
   afterEach(function () {
 
     // alice
-    walletAlice.getNetwork().disconnect()
+    walletAlice.disconnect()
     walletAlice.removeListeners()
     walletAlice.clearStorage()
     commAlice.stop()
@@ -123,7 +122,7 @@ describe('P2PTrade Protocol', function(){
     agentAlice = undefined
 
     // bob
-    walletBob.getNetwork().disconnect()
+    walletBob.disconnect()
     walletBob.removeListeners()
     walletBob.clearStorage()
     commBob.stop()
@@ -133,17 +132,17 @@ describe('P2PTrade Protocol', function(){
     agentBob = undefined
   })
 
-  it('standard usage', function(done){
+  it('standard usage', function(done){ // gold for bitcoin
 
     var offerAlice = new EOffer( // offer gold for bitcoin
       null, // create random oid
       { "color_spec": color_spec, "value": 50000 },
-      { "color_spec": "", "value": 200000 }
+      { "color_spec": "", "value": 200000 } // 2mbtc
     )
 
     var offerBob = new EOffer( // offer bitcoin for gold
       null, // create random oid
-      { "color_spec": "", "value": 200000 },
+      { "color_spec": "", "value": 200000 }, // 2mbtc
       { "color_spec": color_spec, "value": 50000 }
     )
 
@@ -179,9 +178,9 @@ describe('P2PTrade Protocol', function(){
             expect(ewctrlBob.publishedTxLog.length).to.equal(1)
 
             done()
-          }, 10000)
-        }, 10000)
-      }, 10000)
-    }, 10000)
+          }, 5000)
+        }, 5000)
+      }, 5000)
+    }, 5000)
   })
 })
