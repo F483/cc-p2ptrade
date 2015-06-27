@@ -1,57 +1,57 @@
 {
-  "license": "MIT", 
-  "name": "cc-p2ptrade", 
+  "license": "MIT",
+  "name": "cc-p2ptrade",
   "contributors": [
     {
-      "name": "Fabian Barkhau", 
+      "name": "Fabian Barkhau",
       "email": "fabian.barkhau@gmail.com"
     }
-  ], 
-  "author": "Fabian Barkhau <fabian.barkhau@gmail.com>", 
+  ],
+  "author": "Fabian Barkhau <fabian.barkhau@gmail.com>",
   "bugs": {
     "url": "https://github.com/chromaway/cc-p2ptrade/issues"
-  }, 
+  },
   "repository": {
-    "url": "git://github.com/chromaway/cc-p2ptrade.git", 
+    "url": "git://github.com/chromaway/cc-p2ptrade.git",
     "type": "git"
-  }, 
-  "version": "0.0.0", 
+  },
+  "version": "0.0.0",
   "dependencies": {
-    "q": "1.1.2", 
-    "set": "1.1.1", 
-    "request": "2.48.0", 
-    "async": "0.9.0", 
-    "validator": "3.32.0", 
-    "deep-equal": "1.0.0", 
+    "q": "1.1.2",
+    "set": "1.1.1",
+    "request": "2.48.0",
+    "async": "0.9.0",
+    "validator": "3.32.0",
+    "deep-equal": "1.0.0",
     "cc-wallet-core": "git://github.com/chromaway/cc-wallet-core.git#v0.7.5"
-  }, 
+  },
   "scripts": {
-    "coveralls": "npm run-script coverage && coveralls <coverage/lcov.info", 
-    "coverage": "istanbul cover _mocha -- test/*.js", 
-    "lint": "jshint lib/*.js lib/**.js test/*.js && jscs lib/*.js lib/**.js test/*.js", 
-    "compile_test": "browserify test/*.js >ccp2ptrade.test.js", 
-    "compile": "browserify lib/index.js -s ccp2ptrade -o ccp2ptrade.js", 
-    "build": "npm run-script compile && npm run-script uglify", 
-    "clean": "rm -f ccp2ptrade.js ccp2ptrade.min.js ccp2ptrade.test.js", 
-    "test": "istanbul test mocha -- --timeout 60000 --reporter spec test/*.js", 
+    "coveralls": "npm run-script coverage && coveralls <coverage/lcov.info",
+    "coverage": "istanbul cover _mocha -- test/*.js",
+    "lint": "jshint lib/*.js lib/**.js test/*.js && jscs lib/*.js lib/**.js test/*.js",
+    "compile_test": "browserify test/*.js >ccp2ptrade.test.js",
+    "compile": "browserify lib/index.js -s ccp2ptrade -o ccp2ptrade.js",
+    "build": "npm run-script compile && npm run-script uglify",
+    "clean": "rm -f ccp2ptrade.js ccp2ptrade.min.js ccp2ptrade.test.js",
+    "test": "istanbul test mocha -- --timeout 60000 --reporter spec test/*.js",
     "uglify": "uglify -s ccp2ptrade.js -o ccp2ptrade.min.js",
 
     "test_agent": "istanbul test mocha -- --timeout 60000 --reporter spec test/Agent.js",
     "test_ewctrl": "istanbul test mocha -- --timeout 60000 --reporter spec test/EWCtrl.js",
     "test_protocol": "istanbul test mocha -- --timeout 60000 --reporter spec test/protocol.js"
-  }, 
-  "keywords": [], 
+  },
+  "keywords": [],
   "devDependencies": {
-    "coveralls": "2.11.2", 
-    "istanbul": "0.3.2", 
-    "chai": "1.10.0", 
-    "mocha": "2.1.0", 
-    "bip39": "2.1.0", 
-    "jshint": "2.6.3", 
-    "uglify": "0.1.1", 
-    "jscs": "1.11.3", 
+    "coveralls": "2.11.2",
+    "istanbul": "0.3.2",
+    "chai": "1.10.0",
+    "mocha": "2.1.0",
+    "bip39": "2.1.0",
+    "jshint": "2.6.3",
+    "uglify": "0.1.5",
+    "jscs": "1.11.3",
     "browserify": "9.0.3"
-  }, 
-  "main": "./lib/index.js", 
+  },
+  "main": "./lib/index.js",
   "description": ""
 }
